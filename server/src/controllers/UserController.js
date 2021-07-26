@@ -2,8 +2,6 @@
 const { response } = require('express');
 const User = require('../models/User');
 
-
-
 // Criação da Rota que retorna todos os usuários do banco de dados
 const index = async(req,res) => {
     try {

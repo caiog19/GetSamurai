@@ -20,6 +20,10 @@ const User = sequelize.define('User', {
         allowNull: false
     },
 
+    address:{
+        type: DataTypes.STRING
+    },
+
     phone_number:{
         type: DataTypes.STRING,
         allowNull: false
@@ -31,10 +35,19 @@ const User = sequelize.define('User', {
     },
 
     is_cliente:{
-        type: DataTypes.BOOLEAN
+        type: DataTypes.BOOLEAN,
+        allowNull: false
     },
 
     photo: {
+        type: DataTypes.STRING
+    },
+
+    score:{
+        type: DataTypes.FLOAT
+    },
+
+    role:{
         type: DataTypes.STRING
     },
 
@@ -54,8 +67,7 @@ const User = sequelize.define('User', {
 
 // Declaração do tipo de associação entre as models
 User.associate = function(models) {
-    User.hasOne(models.Cliente);
-    User.hasOne(models.Profissional);
+
 }
 
 //Exportação de user para os controllers
