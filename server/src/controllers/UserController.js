@@ -1,6 +1,7 @@
 // Importação das models existentes e framework sequelize
 const { response } = require('express');
 const User = require('../models/User');
+const Auth = require("../config/auth");
 
 // Criação da Rota que retorna todos os usuários do banco de dados
 const index = async(req,res) => {
@@ -26,13 +27,31 @@ const show = async(req,res) => {
 
 // Criação da Rota que cria novos usuários no banco de dados
 const create = async(req,res) => {
-    try{
-          const user = await User.create(req.body);
-          return res.status(201).json({message: "Usuário cadastrado com sucesso!", user: user});
-      }catch(err){
-          res.status(500).json({error: err});
-      }
-};
+	try {
+		const { password } = req.body;
+		const hashAndSalt = Auth.generatePassword(password);
+		const salt = hashAndSalt.salt;
+		const hash = hashAndSalt.hash;
+		const newUserData = {
+			email: req.body.email,
+			name: req.body.name,
+			birthDate: req.body.birthDate,
+            address: req.body.address,
+            phoneNumber: req.body.phoneNumber,
+            isAdmin: req.body.isAdmin,
+            isCliente: req.body.isCliente,
+            photo: req.body.photo,
+            score: req.body.score,
+            role: req.body.role,
+			hash: hash,
+			salt: salt
+		}
+		const user = await User.create(newUserData);
+		return res.status(201).json({user: user});
+	} catch (e) {
+		return res.status(500).json({err: e});
+	}
+}
 
 // Criação da Rota que atualiza atributos de um usuário do banco de dados
 const update = async(req,res) => {

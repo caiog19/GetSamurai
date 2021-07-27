@@ -5,7 +5,7 @@ const sequelize = require("../config/sequelize");
 // Declaração de atributos da model User
 const User = sequelize.define('User', {
 
-    full_name:{
+    name:{
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -14,8 +14,16 @@ const User = sequelize.define('User', {
         type: DataTypes.STRING,
         allowNull: false
     },
+
+    hash: {
+		type: DataTypes.STRING
+	},
+    
+	salt: {
+		type: DataTypes.STRING
+	},
    
-    birth_date:{
+    birthDate:{
         type: DataTypes.DATEONLY,
         allowNull: false
     },
@@ -24,17 +32,17 @@ const User = sequelize.define('User', {
         type: DataTypes.STRING
     },
 
-    phone_number:{
+    phoneNumber:{
         type: DataTypes.STRING,
         allowNull: false
     },
 
-    is_admin:{
+    isAdmin:{
         type: DataTypes.BOOLEAN,
         allowNull: false
     },
 
-    is_cliente:{
+    isCliente:{
         type: DataTypes.BOOLEAN,
         allowNull: false
     },
@@ -51,10 +59,6 @@ const User = sequelize.define('User', {
         type: DataTypes.STRING
     },
 
-    password: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
 },
 
 // Banco de dados cria apenas colunas com os atributos declarados acima,
