@@ -22,6 +22,8 @@ module.exports = sequelize;
 //require('../models/');
 // Inicia as models no sequelize
 require('../models/User');
+require('../models/Service');
+
 
 for (mod in sequelize.models) {
   if (sequelize.models[mod].associate instanceof Function) {

@@ -1,6 +1,7 @@
 // Importação dos controllers existentes 
 const { Router } = require('express');
 const UserController = require('../controllers/UserController');
+const ServiceController = require('../controllers/ServiceController');
 const AuthController = require("../controllers/AuthController");
 const passport = require("passport");
 
@@ -19,6 +20,13 @@ router.get('/user/:id',UserController.show);
 router.post('/users',UserController.create);
 router.put('/user/:id', UserController.update);
 router.delete('/user/:id', UserController.destroy);
+
+// Rotas para CRUD de Service
+router.get('/services',ServiceController.index);
+router.get('/service/:id',ServiceController.show);
+router.post('/services/:user_id',ServiceController.create);
+router.put('/service/:id', ServiceController.update);
+router.delete('/service/:id', ServiceController.destroy);
 
 
 // Exportação das rotas criadas

@@ -55,9 +55,10 @@ const User = sequelize.define('User', {
         type: DataTypes.FLOAT
     },
 
-    role:{
+    description:{
         type: DataTypes.STRING
-    },
+
+    }
 
 },
 
@@ -71,7 +72,7 @@ const User = sequelize.define('User', {
 
 // Declaração do tipo de associação entre as models
 User.associate = function(models) {
-
+    User.hasMany(models.Service);
 }
 
 //Exportação de user para os controllers

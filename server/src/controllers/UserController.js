@@ -42,7 +42,6 @@ const create = async(req,res) => {
             isCliente: req.body.isCliente,
             photo: req.body.photo,
             score: req.body.score,
-            role: req.body.role,
 			hash: hash,
 			salt: salt
 		}
