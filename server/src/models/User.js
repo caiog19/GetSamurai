@@ -73,6 +73,7 @@ const User = sequelize.define('User', {
 // Declaração do tipo de associação entre as models
 User.associate = function(models) {
     User.hasMany(models.Service);
+    User.hasMany(models.Comment);
 }
 
 //Exportação de user para os controllers
