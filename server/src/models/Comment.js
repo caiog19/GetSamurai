@@ -3,23 +3,12 @@ const DataTypes = require("sequelize");
 const sequelize = require("../config/sequelize");
 
 // Declaração de atributos da model Service
-const Service = sequelize.define('Service', {
+const Comment = sequelize.define('Comment', {
 
-    title:{
+    content:{
         type: DataTypes.STRING,
         allowNull: false
-    },
-
-    description:{
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-
-    address:{
-        type: DataTypes.STRING,
-        allowNull:false
     }
-
 
 }
 
@@ -33,10 +22,11 @@ const Service = sequelize.define('Service', {
 
 
 // Declaração do tipo de associação entre as models
-Service.associate = function(models) {
-    Service.belongsTo(models.User);
-    Service.hasMany(models.Comment);
+Comment.associate = function(models) {
+    Comment.belongsTo(models.User);
+    Comment.belongsTo(models.Service);
+
 }
 
 //Exportação de user para os controllers
-module.exports = Service;
+module.exports = Comment;

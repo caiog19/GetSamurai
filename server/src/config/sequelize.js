@@ -23,6 +23,8 @@ module.exports = sequelize;
 // Inicia as models no sequelize
 require('../models/User');
 require('../models/Service');
+require('../models/Comment');
+
 
 
 for (mod in sequelize.models) {

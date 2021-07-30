@@ -2,6 +2,8 @@
 const { Router } = require('express');
 const UserController = require('../controllers/UserController');
 const ServiceController = require('../controllers/ServiceController');
+const CommentController = require('../controllers/CommentController');
+const validator = require('../config/validator');
 const AuthController = require("../controllers/AuthController");
 const passport = require("passport");
 
@@ -27,6 +29,13 @@ router.get('/service/:id',ServiceController.show);
 router.post('/services/:user_id',ServiceController.create);
 router.put('/service/:id', ServiceController.update);
 router.delete('/service/:id', ServiceController.destroy);
+
+// Rotas para CRUD de Comment
+router.get('/comments',CommentController.index);
+router.get('/comment/:id',CommentController.show);
+router.post('/comments/:user_id/:service_id',validator.validationComment('create'), CommentController.create);
+router.put('/comment/:id',validator.validationComment('update'), CommentController.update);
+router.delete('/comment/:id', CommentController.destroy);
 
 
 // Exportação das rotas criadas
