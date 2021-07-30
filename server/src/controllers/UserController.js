@@ -6,7 +6,12 @@ const Auth = require("../config/auth");
 // Criação da Rota que retorna todos os usuários do banco de dados
 const index = async(req,res) => {
     try {
-        const users = await User.findAll();
+        const users = await User.findAll({
+            include: [
+                'liking',
+                'liked_by'
+            ]
+        });
         return res.status(200).json({users});
     }catch(err){
         return res.status(500).json({err});
@@ -17,7 +22,12 @@ const index = async(req,res) => {
 const show = async(req,res) => {
     const {id} = req.params;
     try {
-        const user = await User.findByPk(id);
+        const user = await User.findByPk(id, {
+                include: [
+                    'liking',
+                    'liked_by'
+                ]
+            });
         return res.status(200).json({user});
     }catch(err){
         return res.status(500).json({err});
@@ -81,6 +91,51 @@ const destroy = async(req,res) => {
     }
 };
 
+// Criação da Rota que cria uma relação de favoritar entre dois usuários do banco de dados 
+const like = async(req,res) => {
+    const {liking_id} = req.params;
+    try {
+        const user_liking = await User.findByPk(liking_id);
+        const user_liked  = await User.findByPk(req.body.liked_id);
+        if (user_liked.isCliente == 0){
+            await user_liking.addLiking(user_liked);
+            return res.status(200).json("Usuário " + user_liked.id + " foi favoritado."); 
+        }
+        return res.status(500).json("Cliente não pode ser favoritado.");
+    }catch(err){
+        return res.status(500).json("Usuário não encontrado");
+    }
+};
+
+
+// Criação da Rota que remove uma relação de favoritar pré-existente entre dois usuários do banco de dados 
+const unlike = async(req,res) => {
+    const {liking_id} = req.params;
+    try {
+        const user_liking = await User.findByPk(liking_id);
+        const user_liked  = await User.findByPk(req.body.liked_id);
+        if(await user_liked.hasLiked_by(user_liking)){
+            await user_liking.removeLiking(user_liked);
+            return res.status(200).json("Usuário " + user_liked.id + " foi desfavoritado.");
+        }
+        return res.status(401).json("Usuário não estava favoritado.");
+    }catch(err){
+        return res.status(500).json("Usuário não encontrado");
+    }
+};
+
+// Criação da Rota que mostra uma lista de quais usuários um usuário específico do banco de dados favoritou
+const list_likes = async(req,res) => {
+    const {id} = req.params;
+    try {
+        const user = await User.findByPk(id);
+        const list_likes = await user.getLiking();
+        return res.status(200).json({list_likes});
+    }catch(err){
+        return res.status(500).json("Usuário não encontrado");
+    }
+};
+
 
 // Exportação da CRUD criada acima para routes
 module.exports = {
@@ -88,5 +143,8 @@ module.exports = {
     show,
     create,
     update,
-    destroy
+    destroy,
+    like,
+    unlike,
+    list_likes
 };

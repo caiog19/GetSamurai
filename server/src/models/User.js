@@ -74,6 +74,8 @@ const User = sequelize.define('User', {
 User.associate = function(models) {
     User.hasMany(models.Service);
     User.hasMany(models.Comment);
+    User.belongsToMany(models.User, {through: 'Favorite', as: 'liking', foreignKey: 'likingId'});
+    User.belongsToMany(models.User, {through: 'Favorite', as: 'liked_by', foreignKey: 'likedId'});
 }
 
 //Exportação de user para os controllers
