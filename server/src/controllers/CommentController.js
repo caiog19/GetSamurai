@@ -31,15 +31,15 @@ const show = async(req,res) => {
 // Criação da Rota que cria novos comentários no banco de dados
 const create = async(req,res) => {
 	try {
-        const {user_id} = req.params
-        const {service_id} = req.params
+        const {user_id} = req.params;
+        const {service_id} = req.params;
         const user = await User.findByPk(user_id);
         const service = await Service.findByPk(service_id);
         validationResult(req).throw();
-		const newCommentData = req.body
+		const newCommentData = req.body;
 		const comment = await Comment.create(newCommentData);
-        await comment.setUser(user)
-        await comment.setService(service)
+        await comment.setUser(user);
+        await comment.setService(service);
 		return res.status(201).json({comment: comment});
 	} catch (e) {
 		return res.status(500).json({err: e});
@@ -51,7 +51,7 @@ const update = async(req,res) => {
     const {id} = req.params;
     try {
         validationResult(req).throw();
-        newCommentData = req.body
+        newCommentData = req.body;
         const [updated] = await Comment.update(newCommentData, {where: {id: id}});
         if(updated) {
             const comment = await Comment.findByPk(id);

@@ -23,6 +23,11 @@ router.post('/users',UserController.create);
 router.put('/user/:id', UserController.update);
 router.delete('/user/:id', UserController.destroy);
 
+//Rotas para relacionamento entre Users
+router.put('/like/:liking_id', UserController.like);
+router.put('/unlike/:liking_id', UserController.unlike);
+router.get('/listLikes/:id',UserController.list_likes);
+
 // Rotas para CRUD de Service
 router.get('/services',ServiceController.index);
 router.get('/service/:id',ServiceController.show);
