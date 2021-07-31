@@ -15,6 +15,22 @@ const validationComment = (method) =>{
     }
 }
 
+const validationUser = (method) =>{
+    switch(method){
+        case 'create': {
+            return [
+                body('email').exists().withMessage("This Field mustn't be null").isLength({min: 1}).withMessage('Por favor, preencha o campo').isEmail().withMessage('Precisa ser exemplo@exemplo'),
+                body('name').exists().withMessage("This Field mustn't be null").isLength({min: 1}).withMessage('Por favor, preencha o campo'),
+                body('birthDate').exists().withMessage("This Field mustn't be null").isLength({min: 1}).withMessage('Por favor, preencha o campo').isDate().withMessage('Like this: YYYY/MM/DD'),
+                body('password').exists().withMessage("This Field mustn't be null").isLength({min: 1}).withMessage('Por favor, preencha o campo'),
+                body('phoneNumber').exists().withMessage("This Field mustn't be null").isLength({min: 1}).withMessage('Por favor, preencha o campo')
+            ]
+        }
+    }
+}
+
+
 module.exports = {
-    validationComment
+    validationComment,
+    validationUser
 }

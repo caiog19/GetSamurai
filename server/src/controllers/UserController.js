@@ -2,6 +2,7 @@
 const { response } = require('express');
 const User = require('../models/User');
 const Auth = require("../config/auth");
+const {validationResult} = require('express-validator');
 
 // Criação da Rota que retorna todos os usuários do banco de dados
 const index = async(req,res) => {
@@ -38,6 +39,7 @@ const show = async(req,res) => {
 // Criação da Rota que cria novos usuários no banco de dados
 const create = async(req,res) => {
 	try {
+        validationResult(req).throw(); //validação
 		const { password } = req.body;
 		const hashAndSalt = Auth.generatePassword(password);
 		const salt = hashAndSalt.salt;

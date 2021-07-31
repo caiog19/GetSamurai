@@ -19,7 +19,7 @@ router.post('/login', AuthController.login);
 // Rotas para CRUD de User
 router.get('/users',UserController.index);
 router.get('/user/:id',UserController.show);
-router.post('/users',UserController.create);
+router.post('/users', validator.validationUser('create'), UserController.create);
 router.put('/user/:id', UserController.update);
 router.delete('/user/:id', UserController.destroy);
 
