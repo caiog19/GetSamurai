@@ -2,6 +2,7 @@
 const { response } = require('express');
 const Service = require('../models/Service');
 const User = require('../models/User');
+const {validationResult} = require('express-validator');
 
 // Criação da Rota que retorna todos os serviços do banco de dados
 const index = async(req,res) => {
@@ -29,6 +30,7 @@ const show = async(req,res) => {
 const create = async(req,res) => {
     const {user_id} = req.params;
 	try {
+        validationResult(req).throw(); //validação
         const user = await User.findByPk(user_id);
         if (user.isCliente == 0) {
             const service = await Service.create(req.body);

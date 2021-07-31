@@ -31,7 +31,7 @@ router.get('/listLikes/:id',UserController.list_likes);
 // Rotas para CRUD de Service
 router.get('/services',ServiceController.index);
 router.get('/service/:id',ServiceController.show);
-router.post('/services/:user_id',ServiceController.create);
+router.post('/services/:user_id', validator.validationService('create'), ServiceController.create);
 router.put('/service/:id', ServiceController.update);
 router.delete('/service/:id', ServiceController.destroy);
 

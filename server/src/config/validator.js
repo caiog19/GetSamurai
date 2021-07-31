@@ -19,11 +19,23 @@ const validationUser = (method) =>{
     switch(method){
         case 'create': {
             return [
-                body('email').exists().withMessage("This Field mustn't be null").isLength({min: 1}).withMessage('Por favor, preencha o campo').isEmail().withMessage('Precisa ser exemplo@exemplo'),
-                body('name').exists().withMessage("This Field mustn't be null").isLength({min: 1}).withMessage('Por favor, preencha o campo'),
-                body('birthDate').exists().withMessage("This Field mustn't be null").isLength({min: 1}).withMessage('Por favor, preencha o campo').isDate().withMessage('Like this: YYYY/MM/DD'),
-                body('password').exists().withMessage("This Field mustn't be null").isLength({min: 1}).withMessage('Por favor, preencha o campo'),
-                body('phoneNumber').exists().withMessage("This Field mustn't be null").isLength({min: 1}).withMessage('Por favor, preencha o campo')
+                body('email').exists().withMessage("Email não pode ser nulo.").isLength({min: 1}).withMessage('Por favor, preencha o campo').isEmail().withMessage('Precisa ser exemplo@exemplo'),
+                body('name').exists().withMessage("Nome não pode ser nulo.").isLength({min: 1}).withMessage('Por favor, preencha o campo'),
+                body('birthDate').exists().withMessage("Data de nascimento não pode ser nula.").isLength({min: 1}).withMessage('Por favor, preencha o campo').isDate().withMessage('Like this: YYYY/MM/DD'),
+                body('password').exists().withMessage("Senha não pode ser nula.").isLength({min: 1}).withMessage('Por favor, preencha o campo'),
+                body('phoneNumber').exists().withMessage("Número de telefone não pode ser nulo.").isLength({min: 1}).withMessage('Por favor, preencha o campo')
+            ]
+        }
+    }
+}
+
+const validationService = (method) =>{
+    switch(method){
+        case 'create': {
+            return [
+                body('title').exists().withMessage("Título não pode ser nulo.").isLength({min: 1}).withMessage('Por favor, preencha o campo'),
+                body('description').exists().withMessage("Descrição não pode ser nula.").isLength({min: 1}).withMessage('Por favor, preencha o campo'),
+                body('address').exists().withMessage("Endereço não pode ser nulo.").isLength({min: 1}).withMessage('Por favor, preencha o campo')
             ]
         }
     }
@@ -32,5 +44,6 @@ const validationUser = (method) =>{
 
 module.exports = {
     validationComment,
-    validationUser
+    validationUser,
+    validationService
 }
