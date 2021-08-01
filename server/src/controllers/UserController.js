@@ -1,6 +1,11 @@
 // Importação das models existentes e framework sequelize
 const { response } = require('express');
 const User = require('../models/User');
+const mailer = require('../../../../getsamurais/server/src/config/mail').mailer;
+const readHtml = require("../../../../getsamurais/server/src/config/mail").readHTMLFile;
+const path = require('path');
+const hbs = require("handlebars");
+require("../config/dotenv")();
 const Auth = require("../config/auth");
 const {validationResult} = require('express-validator');
 
@@ -40,6 +45,8 @@ const show = async(req,res) => {
 const create = async(req,res) => {
 	try {
         validationResult(req).throw(); //validação
+        const pathTemplate = path.resolve(__dirname, '..', '..', 'templates');
+		console.log(pathTemplate);
 		const { password } = req.body;
 		const hashAndSalt = Auth.generatePassword(password);
 		const salt = hashAndSalt.salt;
@@ -58,6 +65,23 @@ const create = async(req,res) => {
 			salt: salt
 		}
 		const user = await User.create(newUserData);
+
+        readHtml(path.join(pathTemplate, "confirma_cadastro.html"), (err,html)=>{
+			const template = hbs.compile(html);
+			const replacements = {
+				name: user.name
+			};
+			const htmlToSend = template(replacements);
+        const message = {
+            from: process.env.MAIL_USER,
+            to: user.email,
+            subject: "Confirmação de Cadastro",
+            html: htmlToSend
+        }
+        mailer.sendMail(message, (err) => {
+            console.log(err + "!");
+            });
+        });
 		return res.status(201).json({user: user});
 	} catch (e) {
 		return res.status(500).json({err: e});
