@@ -1,11 +1,11 @@
 // Importação das models existentes e framework sequelize
+require("../config/dotenv")();
 const { response } = require('express');
 const User = require('../models/User');
 const mailer = require('../../../../getsamurais/server/src/config/mail').mailer;
 const readHtml = require("../../../../getsamurais/server/src/config/mail").readHTMLFile;
 const path = require('path');
 const hbs = require("handlebars");
-require("../config/dotenv")();
 const Auth = require("../config/auth");
 const {validationResult} = require('express-validator');
 
@@ -92,9 +92,17 @@ const create = async(req,res) => {
 const update = async(req,res) => {
     const {id} = req.params;
     try {
+        if(req.file){
+            console.log(req.file)
+            req.body.photo = process.env.APP_URL + "/uploads/" + req.file.filename
+        }
+        else{
+            req.body.photo = null
+        }
         const [updated] = await User.update(req.body, {where: {id: id}});
         if(updated) {
             const user = await User.findByPk(id);
+
             return res.status(200).send(user);
         } 
         throw new Error();
@@ -151,7 +159,7 @@ const unlike = async(req,res) => {
 };
 
 // Criação da Rota que mostra uma lista de quais usuários um usuário específico do banco de dados favoritou
-const list_likes = async(req,res) => {
+const listLikes = async(req,res) => {
     const {id} = req.params;
     try {
         const user = await User.findByPk(id);
@@ -172,5 +180,5 @@ module.exports = {
     destroy,
     like,
     unlike,
-    list_likes
+    listLikes
 };

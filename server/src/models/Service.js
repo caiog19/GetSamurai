@@ -36,6 +36,7 @@ const Service = sequelize.define('Service', {
 Service.associate = function(models) {
     Service.belongsTo(models.User);
     Service.hasMany(models.Comment);
+    Service.hasMany(models.Photo);
 }
 
 //Exportação de user para os controllers

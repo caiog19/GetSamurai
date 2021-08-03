@@ -1,7 +1,11 @@
 // Importação das models existentes e framework sequelize
+require('../config/dotenv')();
 const { response } = require('express');
 const Service = require('../models/Service');
 const User = require('../models/User');
+const Photo = require('../models/Photo');
+const fsPromise = require('fs').promises;
+const path = require('path');
 const {validationResult} = require('express-validator');
 
 // Criação da Rota que retorna todos os serviços do banco de dados
@@ -58,7 +62,7 @@ const update = async(req,res) => {
     }
 };
 
-// Criação da Rota que deleta um usuário específico do banco de dados
+// Criação da Rota que deleta um serviço específico do banco de dados
 const destroy = async(req,res) => {
     const {id} = req.params;
     try {
@@ -74,6 +78,43 @@ const destroy = async(req,res) => {
     }
 };
 
+// Criação da Rota que adiciona fotos a um serviço específico do banco de dados
+const addPhotos = async(req, res) => {
+	try {
+		const {id} = req.params;
+        const service = await Service.findByPk(id, {include:{model: Photo}});
+		if(req.files){
+			req.files.photo.forEach(async (photoFromReq) => {
+				const path = process.env.APP_URL + "/uploads/" + photoFromReq.filename;
+				const photo = await Photo.create({
+					path: path,
+				});
+				await service.addPhoto(photo);
+			});
+            await service.reload();
+		}
+        const serviceUpdated = await Service.findByPk(id, {include:{model: Photo}});
+		return res.status(200).json(serviceUpdated);
+	} catch (e) {
+		return res.status(500).json({e});
+	}
+};
+
+// Criação da Rota que remove fotos de um serviço específico do banco de dados
+const removePhoto = async(req, res) => {
+	try {
+        const {id} = req.params;
+		const photo  = await Photo.findByPk(id);
+		const pathDb = photo.path.split("/").slice(-1)[0];
+		await fsPromise.unlink(path.join(__dirname, "..", "..", "uploads", pathDb));
+		await photo.destroy();
+		return res.status(200).json("Foto deletada com sucesso");
+	} catch (e) {
+		return res.status(500).json(e + "!");
+	}
+};
+
+
 
 // Exportação da CRUD criada acima para routes
 module.exports = {
@@ -81,5 +122,7 @@ module.exports = {
     show,
     create,
     update,
-    destroy
+    destroy,
+    addPhotos,
+    removePhoto
 };
