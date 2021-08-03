@@ -3,6 +3,7 @@ const { Router } = require('express');
 const UserController = require('../controllers/UserController');
 const ServiceController = require('../controllers/ServiceController');
 const CommentController = require('../controllers/CommentController');
+const RatingController = require('../controllers/RatingController');
 const validator = require('../config/validator');
 const AuthController = require("../controllers/AuthController");
 const passport = require("passport");
@@ -55,9 +56,9 @@ router.get('/listLike/:id',UserController.listLikes);
 // Rotas para CRUD de Service
 router.get('/service',ServiceController.index);
 router.get('/service/:id',ServiceController.show);
-router.post('/service/:user_id', validator.validationService('create'), ServiceController.create);
-router.put('/service/:id', serviceMiddleware.editDeleteService, ServiceController.update); //passa o Bearer token
-router.delete('/service/:id', serviceMiddleware.editDeleteService, ServiceController.destroy); //passa o Bearer token
+router.post('/service/user/:user_id', validator.validationService('create'), ServiceController.create);
+router.put('/service/:id', validator.validationService('update'), serviceMiddleware.editService, ServiceController.update); //passa o Bearer token
+router.delete('/service/:id', serviceMiddleware.deleteService, ServiceController.destroy); //passa o Bearer token
 
 //Rotas para relacionamento entre Serviço e Fotos
 router.post('/service/:id/file', allUploads, ServiceController.addPhotos);
@@ -67,9 +68,16 @@ router.delete('/service/photo/:id', ServiceController.removePhoto);
 // Rotas para CRUD de Comment
 router.get('/comment',CommentController.index);
 router.get('/comment/:id',CommentController.show);
-router.post('/comment/user/:user_id/service/:service_id',validator.validationComment('create'), CommentController.create);
+router.post('/comment/service/:service_id/user/:user_id',validator.validationComment('create'), CommentController.create);
 router.put('/comment/:id',validator.validationComment('update'), CommentController.update);
 router.delete('/comment/:id', CommentController.destroy);
+
+// Rotas para CRUD de Rating
+router.get('/rating',RatingController.index);
+router.get('/rating/:id',RatingController.show);
+router.post('/rating/service/:service_id', validator.validationRating('create'), RatingController.create);
+router.put('/rating/:id', validator.validationRating('update'), RatingController.update);
+router.delete('/rating/:id/service/:service_id', RatingController.destroy);
 
 
 // Exportação das rotas criadas

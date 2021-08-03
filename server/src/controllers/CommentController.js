@@ -57,7 +57,7 @@ const update = async(req,res) => {
             const comment = await Comment.findByPk(id);
             return res.status(200).send(comment);
         } 
-        return res.status(401).json("Comentário não encontrado");
+        throw new Error("Comentário não encontrado");
     }catch(e){
         return res.status(500).json({err: e});
     }

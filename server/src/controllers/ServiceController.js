@@ -50,15 +50,17 @@ const create = async(req,res) => {
 // Criação da Rota que atualiza atributos de um serviço do banco de dados
 const update = async(req,res) => {
     const {id} = req.params;
+    
     try {
+        validationResult(req).throw(); //validação
         const [updated] = await Service.update(req.body, {where: {id: id}});
         if(updated) {
             const service = await Service.findByPk(id);
             return res.status(200).send(service);
         } 
-        throw new Error();
+        throw new Error("Serviço não encontrado.");
     }catch(err){
-        return res.status(500).json("Serviço não encontrado");
+        return res.status(500).json({err: err});
     }
 };
 
