@@ -67,7 +67,7 @@ router.delete('/service/photo/:id', ServiceController.removePhoto);
 // Rotas para CRUD de Comment
 router.get('/comment',CommentController.index);
 router.get('/comment/:id',CommentController.show);
-router.post('/comment/:user_id/service/:service_id',validator.validationComment('create'), CommentController.create);
+router.post('/comment/user/:user_id/service/:service_id',validator.validationComment('create'), CommentController.create);
 router.put('/comment/:id',validator.validationComment('update'), CommentController.update);
 router.delete('/comment/:id', CommentController.destroy);
 

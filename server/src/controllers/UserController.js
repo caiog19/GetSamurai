@@ -45,8 +45,6 @@ const show = async(req,res) => {
 const create = async(req,res) => {
 	try {
         validationResult(req).throw(); //validação
-        const pathTemplate = path.resolve(__dirname, '..', '..', 'templates');
-		console.log(pathTemplate);
 		const { password } = req.body;
 		const hashAndSalt = Auth.generatePassword(password);
 		const salt = hashAndSalt.salt;
@@ -66,6 +64,7 @@ const create = async(req,res) => {
 		}
 		const user = await User.create(newUserData);
 
+        const pathTemplate = path.resolve(__dirname, '..', '..', 'templates');
         readHtml(path.join(pathTemplate, "confirma_cadastro.html"), (err,html)=>{
 			const template = hbs.compile(html);
 			const replacements = {
