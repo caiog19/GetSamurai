@@ -75,7 +75,8 @@ router.delete('/comment/:id', CommentController.destroy);
 // Rotas para CRUD de Rating
 router.get('/rating',RatingController.index);
 router.get('/rating/:id',RatingController.show);
-router.post('/rating/service/:service_id', validator.validationRating('create'), RatingController.create);
+router.get('/rating/user/:user_id', RatingController.listPerUser); //lista de avaliações do profissional
+router.post('/rating/service/:service_id/user/:user_id', validator.validationRating('create'), RatingController.create);
 router.put('/rating/:id', validator.validationRating('update'), RatingController.update);
 router.delete('/rating/:id/service/:service_id', RatingController.destroy);
 
