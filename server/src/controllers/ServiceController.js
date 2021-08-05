@@ -41,7 +41,7 @@ const create = async(req,res) => {
         if (user.isCliente == 0) {
             const service = await Service.create(req.body);
             await service.setUser(user);
-            await Service.update({authorName: user.name}, {where: {id: service.id}})
+            //await Service.update({authorName: user.name}, {where: {id: service.id}})
 		    return res.status(201).json({service: service});
         }
 		throw new Error();
@@ -120,27 +120,40 @@ const removePhoto = async(req, res) => {
 };
 
 const search = async(req, res) => {
-    const { string } = req.body;
+    const { term } = req.body;
     try {
-        const results = await Service.findAll ({
+        const servicesResults = await Service.findAll ({
             where: {
                 [Op.or]: {
                     title: {
-                        [Op.like]: '%' + string + '%'
+                        [Op.like]: '%' + term + '%'
                     },
                     description: {
-                        [Op.like]: '%' + string + '%'
+                        [Op.like]: '%' + term + '%'
                     },
                     address: {
-                        [Op.like]: '%' + string + '%'
-                    },
-                    authorName: {
-                        [Op.like]: '%' + string + '%'
+                        [Op.like]: '%' + term + '%'
                     }
                 }
-            }   
+            }, include: [{
+                model: User
+            }]
         });
-        return res.status(200).json(results);
+        const usersResults = await User.findAll ({
+            where: {
+                [Op.or]: {
+                    name: {
+                        [Op.like]: '%' + term + '%'
+                    },
+                }
+            }, include: [{
+                model: Service,
+            }]
+        });
+        return res.status(200).json({
+            servicesResults,
+            usersResults
+        });
     } catch (e) {
 		return res.status(500).json(e + "!");
 	}

@@ -56,7 +56,7 @@ router.get('/listLike/:id',UserController.listLikes);
 // Rotas para CRUD de Service
 router.get('/service',ServiceController.index);
 router.get('/service/:id',ServiceController.show);
-router.get('/search',ServiceController.search); //procura os servicos pelo body key "string"
+router.get('/search',ServiceController.search); //procura os servicos pelo body key "term"
 router.post('/service/user/:user_id', validator.validationService('create'), ServiceController.create);
 router.put('/service/:id', validator.validationService('update'), serviceMiddleware.editService, ServiceController.update); //passa o Bearer token
 router.delete('/service/:id', serviceMiddleware.deleteService, ServiceController.destroy); //passa o Bearer token

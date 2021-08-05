@@ -20,10 +20,11 @@ const Service = sequelize.define('Service', {
         allowNull:false
     },
 
+    /*
     authorName: {
         type: DataTypes.STRING
     }
-
+    */
 
 }
 
