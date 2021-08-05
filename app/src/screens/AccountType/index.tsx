@@ -9,14 +9,19 @@ import { AntDesign } from '@expo/vector-icons';
 import  BackButton  from '../../components/BackButton/index'
 import { BlueButtonStyle, TextBlueButton } from '../../components/BlueButton/style';
 import BlueButton from '../../components/BlueButton';
+import Title from '../../components/Title';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function AccountType() {
     
     const navigation = useNavigation();
     
-    function UseRole(role:string){
 
+    async function UseRole(role:string){
+        
+        await AsyncStorage.setItem('role', role)
         navigation.navigate('Register', {role} )
+
     
     }
     
@@ -31,14 +36,13 @@ export default function AccountType() {
                 <EnsoLogo source={require('../../../assets/enso23.png')}>
                 </EnsoLogo>
 
-                <AccountForm>Escolha um tipo de conta</AccountForm>
+                <Title title="Escolha um tipo de conta"></Title>
                 
             </AlignItems>
 
             <BlueButton title='Cliente' handleOnPress={() => UseRole('isClient')}/>
                 
            
-
             <ExplainText>
                 <Text>
                     Com uma conta de Cliente, você pode contratar serviços.

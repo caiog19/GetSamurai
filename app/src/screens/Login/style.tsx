@@ -9,13 +9,11 @@ export const EnsoLogo = styled.Image`
 `
 
 export const LoginForm = styled.Text`
-
     font-weight: bold;
     color: #000000;
     font-size: 30px;
     font-family: MontBold;
-    display: flex;
-    align-items: center;
+    
 `
 export const AlignItems = styled.Text`
         display: flex;

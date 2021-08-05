@@ -9,7 +9,7 @@ export default function BackButton() {
     return (
         <ViewBackButton> 
         
-        <AntDesign.Button name="left" size={24} color="grey" backgroundColor="transparent" onPress={() => navigation.goBack()} />
+        <AntDesign name="left" size={24} color="grey" backgroundColor="transparent" onPress={() => navigation.goBack()} />
         
         </ViewBackButton>
    );

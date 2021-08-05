@@ -3,7 +3,7 @@ import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
 import { View, ScrollView, TouchableOpacity, Text } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 
-export default function ProfesionalCards() {
+export default function ProfesionalCards(props:{title:string, name:string}) {
 
     const navigation = useNavigation();
 
@@ -11,15 +11,14 @@ export default function ProfesionalCards() {
         
         <View>
 
-                <Card style={{ backgroundColor: "transparent" }}
-                    onPress={()=> navigation.navigate("MyServices")}>
+                <Card style={{ backgroundColor: "transparent", marginLeft:'5%',borderRadius: 8,marginRight:'5%', marginTop: '5%' }}
+                    onPress={()=> navigation.navigate("Service")}>
 
-                    <Card.Content style={{ backgroundColor: "#C3CBCF", borderRadius: 8, marginTop: '5%' }}>
-
+                    <Card.Content style={{ backgroundColor: "#C3CBCF", borderRadius: 8 }}>
                     
-                        <Title>Marcenaria</Title>
+                        <Title>{props.title}</Title>
 
-                        <Paragraph>Paulo André</Paragraph>
+                        <Paragraph> {props.name} </Paragraph>
                         
                     </Card.Content>
                 </Card> 

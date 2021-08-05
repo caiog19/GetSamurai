@@ -5,8 +5,9 @@ import { EnsoLogo, LoginForm, AlignItems, InputForm, RegisterText, RegisterButto
 import { NavigationContext, useNavigation } from '@react-navigation/native';
 //import { BlueButtonStyle, TextBlueButton } from '../../components/BlueButton/style';
 import BlueButton from '../../components/BlueButton';
-import { BlueButtonStyle } from '../../components/BlueButton/style';
+
 import  BackButton  from '../../components/BackButton/index'
+import Title from '../../components/Title';
 
 export default function Login() {
     const navigation = useNavigation();
@@ -27,7 +28,7 @@ export default function Login() {
             <AlignItems>
             <EnsoLogo source={require('../../../assets/enso23.png')}>
                 </EnsoLogo>
-            <LoginForm>Entrar</LoginForm>
+            <Title title="Entrar" ></Title>
             </AlignItems>
 
 

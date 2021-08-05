@@ -7,18 +7,19 @@ export const SearchBarContainer = styled.View`
     height: ${hp('5%')};
     
     background-color: #cfd7db;
-
     
     border-radius: 10;
+    
     
 `
 export const SearchTextInput = styled.TextInput`
     width: ${wp('73%')};
-    height: ${hp('6%')};
+    height: ${hp('5%')};
     border-radius: 10;
     font-family: MontReg;
     color: black;
-    margin-left: 10%;
+    margin-left: 2%;
+    
      
 `
 
@@ -28,5 +29,10 @@ export const AlignItens = styled.Text`
         margin-left: 5%;
         margin-top: 5%;
         
+`
+export const AlignSearchAndIcon = styled.Text`
+    display: flex;
+    align-items: center;
+    margin-left: 2%;
 `
 

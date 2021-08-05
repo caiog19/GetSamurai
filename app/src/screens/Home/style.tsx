@@ -8,21 +8,16 @@ export const Title = styled.Text`
     font-family: MontBold;
     display: flex;
     align-items: center;
-    margin-top: 10%;
     margin-left: 5%;
 `
-export const Cart = styled.TouchableOpacity`
-    width: ${wp('90%')};
-    padding: 4%;
-    margin-right:5%;
-
-    background-color: transparent;
-    margin-left: 16%;
-    margin-top: 13%;
-`
 export const AlignTitle = styled.Text`
-    display: flex;
+    display:flex;
+    justify-content: space-between;
+    margin-right: 5%;
+    margin-left: 5%;
+    margin-top: 5%;
     align-items: center;
+
 `
 export const TitleText = styled.Text`
     font-family: MontReg;

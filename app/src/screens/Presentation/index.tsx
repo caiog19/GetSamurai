@@ -3,7 +3,11 @@ import { View, ViewBase,Text, TouchableOpacity, BackHandler, Button, Image } fro
 import { NavigationContext, useNavigation } from '@react-navigation/native';
 import { EnsoLogo, PresentationTitle, AlignItems, ManWorking, ImgText, ButtonLogin, LoginText, VisitorButton, VisitorText  } from './style';
 import BlueButton from '../../components/BlueButton';
+import Title from '../../components/Title';
+import WhiteButton from '../../components/WhiteButton';
+
 export default function Presentation(){
+
 
     const navigation = useNavigation();
     
@@ -13,7 +17,7 @@ export default function Presentation(){
             <AlignItems>
             <EnsoLogo source={require('../../../assets/enso23.png')}>
                 </EnsoLogo>
-            <PresentationTitle>GetSamurais</PresentationTitle>
+            <Title title="GetSamurais"></Title>
             </AlignItems>
 
             <View>
@@ -23,9 +27,7 @@ export default function Presentation(){
             <BlueButton title={"Cadastre-se"}  handleOnPress={()=>navigation.navigate("AccountType")}></BlueButton>
 
         <View>
-            <ButtonLogin onPress={()=>navigation.navigate("Login")}>
-                <LoginText>Entrar</LoginText>
-            </ButtonLogin>
+            <WhiteButton title="Entrar" handleOnPress={()=>navigation.navigate("Login")}></WhiteButton>
 
         </View>
 

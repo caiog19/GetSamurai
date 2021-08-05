@@ -1,53 +1,36 @@
 import React from 'react';
-import { View, ViewBase, Text, TouchableOpacity } from 'react-native';
-import { useForm, Controller } from 'react-hook-form';
-import { TextInputMask } from 'react-native-masked-text';
-import { InputForm, EnsoLogo, AlignItems, TextInputMaskStyle } from './style'
-import { BsChevronLeft } from "react-icons/bs";
-import { NavigationContext, useNavigation, useRoute } from '@react-navigation/native';
-import { AntDesign } from '@expo/vector-icons';
-import  BackButton  from '../../components/BackButton/index'
-import BlueButton from '../../components/BlueButton';
+import { View, Text, TouchableOpacity, TextInput, Alert } from 'react-native';
+import BackButton from '../../components/BackButton';
 import Title from '../../components/Title';
+import { useForm, Controller } from 'react-hook-form';
+import { InputForm, TextInputMaskStyle } from '../Register/style'
+import WhiteButton from '../../components/WhiteButton';
+import { AlignTitle, AlignWhiteButton } from './style';
+import BlueButton from '../../components/BlueButton';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
+export default function ProfileConfig(this: any) {
 
-export default function Register() {
+    /*
+    let _logOut
+    _logOut = async () => {
+        await AsyncStorage.clear();
+        this.props.navigation.navigate('Presentation')
+    }
+*/
     const { control, handleSubmit, formState: { errors }, getValues } = useForm({ mode: 'onTouched' });
-    const navigation = useNavigation();
     const onSubmit = (data: FormData) => {
-        
         console.log(data);
-        navigation.navigate('Home')
     }
-
-    const route = useRoute();
-    
-    const role = route.params?.role;
-    console.log(role)
-
-    interface FormData {
-
-        fullName: string;
-        email: string;
-        password: string;
-        confirmPassword: string;
-        phoneNumber: number;
-    }
-
+    const navigation = useNavigation();
     return (
+
         <View>
-            
-                <BackButton/>
-            
-
-
-            <AlignItems>
-                <EnsoLogo source={require('../../../assets/enso23.png')}>
-                </EnsoLogo>
-                <Title title="Cadastro"></Title>
-
-            </AlignItems>
-
+            <BackButton />
+            <AlignTitle>
+                <Title title="Configurações"></Title>
+            </AlignTitle>
             <View>
 
                 <Controller
@@ -63,17 +46,17 @@ export default function Register() {
                     )}
                     rules={{
                         required: 'O nome é obrigatório.',
-                        
+
                     }}
 
                     name='fullName'
                     defaultValue=''
                 />
-                {errors.fullName && <Text style={{ color: 'red' }}>{errors.fullName.message}</Text>}  
+                {errors.fullName && <Text style={{ color: 'red' }}>{errors.fullName.message}</Text>}
             </View>
 
-            <View>    
-                 <Controller  
+            <View>
+                <Controller
                     control={control}
                     render={({ field: { onBlur, onChange, value } }) => (
                         <TextInputMaskStyle
@@ -98,9 +81,9 @@ export default function Register() {
                     name='phoneNumber'
                     defaultValue=''
                 />
-                {errors.phoneNumber && <Text style={{ color: 'red' }}>{errors.phoneNumber.message}</Text>} 
-            </View>                                                                                      
-                    
+                {errors.phoneNumber && <Text style={{ color: 'red' }}>{errors.phoneNumber.message}</Text>}
+            </View>
+
             <View>
                 <Controller
                     control={control}
@@ -142,36 +125,27 @@ export default function Register() {
                 />
                 {errors.password && <Text style={{ color: 'red' }}>{errors.password.message}</Text>}
             </View>
-            <View>
 
-                <Controller
-                    control={control}
-                    render={({ field: { onBlur, onChange, value } }) => (
-                        <InputForm
-                            placeholder='Confirme sua senha'
-                            secureTextEntry
-                            onBlur={onBlur}
-                            onChangeText={(value: any) => onChange(value)}
-                            value={value}
-                        />
-                    )}
-                    rules={{
-                        validate: {
-                            matchesPreviousPassword: (value) => {
-                                const { password } = getValues();
-                                return password === value || 'As senhas não coincidem..';
-                            }
-                        }
-                    }}
-                    name='confirmPassword'
-                    defaultValue=''
-                />
-                {errors.confirmPassword && <Text style={{ color: 'red' }}>{errors.confirmPassword.message}</Text>}
-            </View>
-            
-            <BlueButton title={"Confirmar"}  handleOnPress={handleSubmit(onSubmit)}></BlueButton>
+            <BlueButton title="Salvar alterações" handleOnPress={null}></BlueButton>
+
+            <AlignWhiteButton>
+
+                <WhiteButton title="Sair do Aplicativo" handleOnPress={()=>
+                Alert.alert('Sair', 'Você quer sair?',[
+                    {text: 'Cancelar', onPress: ()=>{return null}},
+                    {text: 'Confirmar', onPress: () => {
+                        AsyncStorage.clear();
+                        navigation.navigate('Presentation')
+                    }},
+                ],
+                { cancelable: false }
+                )
+                
+                }></WhiteButton>
+            </AlignWhiteButton>
+
 
         </View>
 
-    )
+    );
 }

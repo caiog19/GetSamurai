@@ -1,13 +1,24 @@
 import React from 'react';
-import { View, ViewBase,Text, TouchableOpacity, BackHandler, Button } from 'react-native';
+import { View } from 'react-native';
+import Title from '../../components/Title';
+import { AlignTitle } from './style';
 
-export default function Myservices(){
-     
-    return(   
+export default function Myservices() {
+
+    
+
+
+
+    return (
+
         <View>
-            
-            <Text>MyServices</Text>
-            
+
+            <AlignTitle>
+                <Title title="Meus Serviços"></Title>
+            </AlignTitle>
+
+           
         </View>
+
     );
 }

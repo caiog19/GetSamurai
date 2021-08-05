@@ -7,7 +7,7 @@ export const Title = styled.Text`
     color: #000000;
     font-size: 30px;
     font-family: MontBold;
-    margin-top: 10%;
+    margin-top: 5%;
     margin-left: 5%;
     
 `
@@ -26,6 +26,19 @@ export const AlignCamera = styled.Text`
 export const Circle = styled.Image`
     border-radius: 50%;
 `
-export const AlignProfileIcon = styled.Image`
-
+export const DescriptionBackGround = styled.Text`
+    width: 375;
+    height: 237;
+    margin-top: 5%;
+    background-color: #C3CBCF;
+`
+export const DescriptionContainer = styled.Text`
+    display: flex;
+    
+`
+export const DescriptionInput = styled.TextInput`
+    width: 335;
+    height: 155;
+    text-align:start;
+      
 `

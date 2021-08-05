@@ -5,19 +5,17 @@ import { NavigationContainer, NavigationContext, TabActions } from '@react-navig
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import { useFonts } from 'expo-font';
 
 import Register from './src/screens/register';
 import Login from './src/screens/Login';
 import AccountType from './src/screens/AccountType';
-import Home from './src/screens/Home';
+import Service from './src/screens/Service'
 import Presentation from './src/screens/Presentation';
-
+import Comments from './src/screens/Comments';
+import Cart from './src/screens/Cart';
 import NavBar from './src/components/NavBar';
-
-const Stack = createStackNavigator();
-
+import ProfileConfig from './src/screens/ProfileConfig';
 
 export default function App() {
   const [ loaded ] = useFonts({
@@ -45,10 +43,14 @@ export default function App() {
 
        <Stack.Screen name="AccountType" component={AccountType}/>
 
-      <Stack.Screen name="NavBar" component={NavBar}/>
-       
-      
-       
+       <Stack.Screen name="Service" component={Service}/>
+
+       <Stack.Screen name="Comments" component={Comments}/>
+
+       <Stack.Screen name="Cart" component={Cart}/>
+
+       <Stack.Screen name="ProfileConfig" component={ProfileConfig}/>
+       <Stack.Screen name="NavBar" component={NavBar}/>
      </Stack.Navigator>
 
    </NavigationContainer>

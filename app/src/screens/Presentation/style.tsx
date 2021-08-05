@@ -40,7 +40,14 @@ export const ImgText = styled.Text`
     margin-right: auto;
 `
 export const ButtonLogin = styled.TouchableOpacity`
-    width: ${wp('100%')};
+
+    width: ${wp('90%')};
+    background-color: white;
+    display: block;
+    margin-top: 2%;
+    margin-left: auto;
+    margin-right: auto;
+
 `
 export const LoginText = styled.Text`
 
@@ -48,8 +55,7 @@ export const LoginText = styled.Text`
     font-size: 17px;
     font-family: MontBold;
     display: block;
-    margin-left: auto;
-    margin-right: auto;
+    
     margin-top: 8%;
 
 `
