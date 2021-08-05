@@ -18,6 +18,10 @@ const Service = sequelize.define('Service', {
     address:{
         type: DataTypes.STRING,
         allowNull:false
+    },
+
+    authorName: {
+        type: DataTypes.STRING
     }
 
 

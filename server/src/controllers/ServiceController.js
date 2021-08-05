@@ -7,6 +7,8 @@ const Photo = require('../models/Photo');
 const fsPromise = require('fs').promises;
 const path = require('path');
 const {validationResult} = require('express-validator');
+const { Op } = require("sequelize");
+
 
 // Criação da Rota que retorna todos os serviços do banco de dados
 const index = async(req,res) => {
@@ -39,6 +41,7 @@ const create = async(req,res) => {
         if (user.isCliente == 0) {
             const service = await Service.create(req.body);
             await service.setUser(user);
+            await Service.update({authorName: user.name}, {where: {id: service.id}})
 		    return res.status(201).json({service: service});
         }
 		throw new Error();
@@ -116,6 +119,33 @@ const removePhoto = async(req, res) => {
 	}
 };
 
+const search = async(req, res) => {
+    const { string } = req.body;
+    try {
+        const results = await Service.findAll ({
+            where: {
+                [Op.or]: {
+                    title: {
+                        [Op.like]: '%' + string + '%'
+                    },
+                    description: {
+                        [Op.like]: '%' + string + '%'
+                    },
+                    address: {
+                        [Op.like]: '%' + string + '%'
+                    },
+                    authorName: {
+                        [Op.like]: '%' + string + '%'
+                    }
+                }
+            }   
+        });
+        return res.status(200).json(results);
+    } catch (e) {
+		return res.status(500).json(e + "!");
+	}
+};
+
 
 
 // Exportação da CRUD criada acima para routes
@@ -126,5 +156,6 @@ module.exports = {
     update,
     destroy,
     addPhotos,
-    removePhoto
+    removePhoto,
+    search
 };
