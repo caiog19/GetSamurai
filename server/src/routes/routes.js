@@ -4,6 +4,7 @@ const UserController = require('../controllers/UserController');
 const ServiceController = require('../controllers/ServiceController');
 const CommentController = require('../controllers/CommentController');
 const RatingController = require('../controllers/RatingController');
+const CartController = require('../controllers/CartController');
 const validator = require('../config/validator');
 const AuthController = require("../controllers/AuthController");
 const passport = require("passport");
@@ -65,6 +66,7 @@ router.post('/service/:id/file', allUploads, ServiceController.addPhotos);
 router.delete('/service/photo/:id', ServiceController.removePhoto);
 
 
+
 // Rotas para CRUD de Comment
 router.get('/comment',CommentController.index);
 router.get('/comment/:id',CommentController.show);
@@ -78,6 +80,14 @@ router.get('/rating/:id',RatingController.show);
 router.post('/rating/service/:service_id', validator.validationRating('create'), RatingController.create);
 router.put('/rating/:id', validator.validationRating('update'), RatingController.update);
 router.delete('/rating/:id/service/:service_id', RatingController.destroy);
+
+// Rotas para CRUD de Cart
+router.get('/cart/user/:user_id',CartController.index);
+router.post('/cart/user/:user_id',CartController.sendEmail);
+router.put('/cart/service/:service_id/user/:user_id',CartController.addServices);
+router.delete('/cart/service/:service_id/user/:user_id',CartController.removeServices);
+
+
 
 
 // Exportação das rotas criadas

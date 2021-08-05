@@ -4,6 +4,7 @@ const { response } = require('express');
 const Service = require('../models/Service');
 const User = require('../models/User');
 const Photo = require('../models/Photo');
+const Cart = require('../models/Cart');
 const fsPromise = require('fs').promises;
 const path = require('path');
 const {validationResult} = require('express-validator');
@@ -115,6 +116,7 @@ const removePhoto = async(req, res) => {
 		return res.status(500).json(e + "!");
 	}
 };
+
 
 
 

@@ -2,6 +2,7 @@
 require("../config/dotenv")();
 const { response } = require('express');
 const User = require('../models/User');
+const Cart = require('../models/Cart');
 const mailer = require('../../../../getsamurais/server/src/config/mail').mailer;
 const readHtml = require("../../../../getsamurais/server/src/config/mail").readHTMLFile;
 const path = require('path');
@@ -64,6 +65,11 @@ const create = async(req,res) => {
 		}
 		const user = await User.create(newUserData);
 
+        if(user.isAdmin == 0){
+            const cart = await Cart.create();
+            await cart.setUser(user);
+        }
+    
         const pathTemplate = path.resolve(__dirname, '..', '..', 'templates');
         readHtml(path.join(pathTemplate, "confirma_cadastro.html"), (err,html)=>{
 			const template = hbs.compile(html);
@@ -114,6 +120,8 @@ const update = async(req,res) => {
 const destroy = async(req,res) => {
     const {id} = req.params;
     try {
+        const user = await User.findByPk(id);
+        await Cart.destroy({where: {id: user.CartId}});
         const deleted = await User.destroy({where: {id: id}});
         if(deleted) {
             return res.status(200).json("Usuário deletado com sucesso.");

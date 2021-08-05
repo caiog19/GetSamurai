@@ -38,6 +38,7 @@ Service.associate = function(models) {
     Service.hasMany(models.Comment);
     Service.hasMany(models.Photo);
     Service.hasMany(models.Rating);
+    Service.belongsToMany(models.Cart, {through: 'List', as: 'listed', foreignKey: 'listedId'});
 }
 
 //Exportação de user para os controllers

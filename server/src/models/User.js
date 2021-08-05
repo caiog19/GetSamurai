@@ -70,6 +70,7 @@ User.associate = function(models) {
     User.hasMany(models.Service);
     User.hasMany(models.Comment);
     User.hasMany(models.Rating);
+    User.belongsTo(models.Cart);
     User.belongsToMany(models.User, {through: 'Favorite', as: 'liking', foreignKey: 'likingId'});
     User.belongsToMany(models.User, {through: 'Favorite', as: 'liked_by', foreignKey: 'likedId'});
     
