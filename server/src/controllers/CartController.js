@@ -110,9 +110,6 @@ const removeServices = async(req, res) => {
 };
 
 
-
-
-
 // Exportação da CRUD criada acima para routes
 module.exports = {
     index,
