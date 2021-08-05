@@ -13,9 +13,7 @@ const Rating = sequelize.define('Rating', {
     content:{
         type: DataTypes.STRING,
         allowNull: false
-    },
-
-
+    }
 
 }
 

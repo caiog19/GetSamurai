@@ -8,6 +8,8 @@ const Cart = require('../models/Cart');
 const fsPromise = require('fs').promises;
 const path = require('path');
 const {validationResult} = require('express-validator');
+const { Op } = require("sequelize");
+
 
 // Criação da Rota que retorna todos os serviços do banco de dados
 const index = async(req,res) => {
@@ -40,6 +42,7 @@ const create = async(req,res) => {
         if (user.isCliente == 0) {
             const service = await Service.create(req.body);
             await service.setUser(user);
+            //await Service.update({authorName: user.name}, {where: {id: service.id}})
 		    return res.status(201).json({service: service});
         }
 		throw new Error();
@@ -117,6 +120,46 @@ const removePhoto = async(req, res) => {
 	}
 };
 
+const search = async(req, res) => {
+    const { term } = req.body;
+    try {
+        const servicesResults = await Service.findAll ({
+            where: {
+                [Op.or]: {
+                    title: {
+                        [Op.like]: '%' + term + '%'
+                    },
+                    description: {
+                        [Op.like]: '%' + term + '%'
+                    },
+                    address: {
+                        [Op.like]: '%' + term + '%'
+                    }
+                }
+            }, include: [{
+                model: User
+            }]
+        });
+        const usersResults = await User.findAll ({
+            where: {
+                [Op.or]: {
+                    name: {
+                        [Op.like]: '%' + term + '%'
+                    },
+                }
+            }, include: [{
+                model: Service,
+            }]
+        });
+        return res.status(200).json({
+            servicesResults,
+            usersResults
+        });
+    } catch (e) {
+		return res.status(500).json(e + "!");
+	}
+};
+
 
 
 
@@ -128,5 +171,6 @@ module.exports = {
     update,
     destroy,
     addPhotos,
-    removePhoto
+    removePhoto,
+    search
 };
