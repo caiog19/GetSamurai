@@ -39,7 +39,7 @@ const create = async(req,res) => {
 	try {
         validationResult(req).throw(); //validação
         const user = await User.findByPk(user_id);
-        if (user.isCliente == 0) {
+        if (user.isClient == 0) {
             const service = await Service.create(req.body);
             await service.setUser(user);
             //await Service.update({authorName: user.name}, {where: {id: service.id}})

@@ -12,7 +12,8 @@ const User = sequelize.define('User', {
 
     email:{
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
 
     hash: {
@@ -25,7 +26,6 @@ const User = sequelize.define('User', {
    
     birthDate:{
         type: DataTypes.DATEONLY,
-        allowNull: false
     },
     phoneNumber:{
         type: DataTypes.STRING,
@@ -37,7 +37,7 @@ const User = sequelize.define('User', {
         allowNull: false
     },
 
-    isCliente:{
+    isClient:{
         type: DataTypes.BOOLEAN,
         allowNull: false
     },

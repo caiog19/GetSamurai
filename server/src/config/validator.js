@@ -22,7 +22,7 @@ const validationUser = (method) =>{
                 body('email').exists().withMessage("Email não pode ser nulo.").isLength({min: 1, max: 50}).withMessage('Por favor, preencha o campo').isEmail().withMessage('Precisa ser exemplo@exemplo'),
                 body('name').exists().withMessage("Nome não pode ser nulo.").isLength({min: 1, max: 50}).withMessage('Por favor, preencha o campo'),
                 body('password').exists().withMessage("Senha não pode ser nula.").isLength({min: 1, max: 30}).withMessage('Por favor, preencha o campo'),
-                body('phoneNumber').exists().withMessage("Número de telefone não pode ser nulo.").isLength({min: 1, max: 13}).withMessage('Por favor, preencha o campo')
+                body('phoneNumber').exists().withMessage("Número de telefone não pode ser nulo.").isLength({min: 1, max: 14}).withMessage('Por favor, preencha o campo')
             ]  
         }
         case 'update': {

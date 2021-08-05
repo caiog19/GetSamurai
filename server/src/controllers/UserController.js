@@ -57,7 +57,7 @@ const create = async(req,res) => {
             address: req.body.address,
             phoneNumber: req.body.phoneNumber,
             isAdmin: req.body.isAdmin,
-            isCliente: req.body.isCliente,
+            isClient: req.body.isClient,
             photo: req.body.photo,
             score: req.body.score,
 			hash: hash,
@@ -138,7 +138,7 @@ const like = async(req,res) => {
     try {
         const user_liking = await User.findByPk(liking_id);
         const user_liked  = await User.findByPk(req.body.liked_id);
-        if (user_liked.isCliente == 0){
+        if (user_liked.isClient == 0){
             await user_liking.addLiking(user_liked);
             return res.status(200).json("Usuário " + user_liked.id + " foi favoritado."); 
         }
