@@ -123,7 +123,7 @@ const removePhoto = async(req, res) => {
 const search = async(req, res) => {
     const { term } = req.body;
     try {
-        const servicesResults = await Service.findAll ({
+        const results = await Service.findAll ({
             where: {
                 [Op.or]: {
                     title: {
@@ -140,21 +140,7 @@ const search = async(req, res) => {
                 model: User
             }]
         });
-        const usersResults = await User.findAll ({
-            where: {
-                [Op.or]: {
-                    name: {
-                        [Op.like]: '%' + term + '%'
-                    },
-                }
-            }, include: [{
-                model: Service,
-            }]
-        });
-        return res.status(200).json({
-            servicesResults,
-            usersResults
-        });
+        return res.status(200).json(results);
     } catch (e) {
 		return res.status(500).json(e + "!");
 	}
