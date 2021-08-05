@@ -9,7 +9,7 @@ import { AntDesign } from '@expo/vector-icons';
 import  BackButton  from '../../components/BackButton/index'
 import BlueButton from '../../components/BlueButton';
 import Title from '../../components/Title';
-import UserService from '../../services/UserService';
+import UserService, {FormRegister} from '../../services/UserService';
 
 
 export default function Register() {
@@ -22,7 +22,7 @@ export default function Register() {
     const role:number = route.params?.role;
     console.log(role)
 
-    const onSubmit = (data: FormData) => {
+    const onSubmit = (data: FormRegister) => {
         data.isClient = role;
         data.isAdmin = 0;
 
@@ -35,15 +35,6 @@ export default function Register() {
         console.log(data);
     };
 
-    interface FormData {
-        isClient: number;
-        name: string;
-        email: string;
-        password: string;
-        confirmPassword: string;
-        phoneNumber: string;
-        isAdmin: number;
-    }
 
     return (
         <View>

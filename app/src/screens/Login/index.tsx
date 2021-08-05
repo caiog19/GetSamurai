@@ -9,19 +9,28 @@ import BlueButton from '../../components/BlueButton';
 import  BackButton  from '../../components/BackButton/index'
 import Title from '../../components/Title';
 
+import UserService, {FormLogin} from '../../services/UserService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
+
 export default function Login() {
     const navigation = useNavigation();
     const { control, handleSubmit, formState:{errors}, getValues } = useForm({mode: 'onTouched'});
 
-    const onSubmit = (data: FormData) => {
+    const onSubmit = (data: FormLogin) => {
         console.log(data);
-        navigation.navigate("NavBar")
+        UserService.loginUser(data).then(response => {
+            setToken('token', response.data.token)
+            navigation.navigate("NavBar")
+        })
+        
     }
-
-    interface FormData {
-        email: string;
-        password: string;
+    
+    async function setToken(name:string, value:string) {
+        await AsyncStorage.setItem(name, value)
     }
+    
     return (
         <View>
         <BackButton/>
