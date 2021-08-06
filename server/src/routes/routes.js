@@ -9,6 +9,7 @@ const validator = require('../config/validator');
 const AuthController = require("../controllers/AuthController");
 const passport = require("passport");
 const serviceMiddleware = require('../middlewares/serviceMiddleware');
+const commentMiddleware = require('../middlewares/commentMiddleware');
 const path = require('path');
 const multer = require('multer');
 const storage = require("../config/files");
@@ -57,6 +58,7 @@ router.get('/listLike/:id',UserController.listLikes);
 // Rotas para CRUD de Service
 router.get('/service',ServiceController.index);
 router.get('/service/:id',ServiceController.show);
+router.get('/service/user/:user_id',ServiceController.list); //lista os serviços criados pelo usuario
 router.get('/search',ServiceController.search); //procura os servicos pelo body key "term"
 router.post('/service/user/:user_id', validator.validationService('create'), ServiceController.create);
 router.put('/service/:id', validator.validationService('update'), serviceMiddleware.editService, ServiceController.update); //passa o Bearer token
@@ -73,7 +75,7 @@ router.get('/comment',CommentController.index);
 router.get('/comment/:id',CommentController.show);
 router.post('/comment/service/:service_id/user/:user_id',validator.validationComment('create'), CommentController.create);
 router.put('/comment/:id',validator.validationComment('update'), CommentController.update);
-router.delete('/comment/:id', CommentController.destroy);
+router.delete('/comment/:id',commentMiddleware.deleteComment, CommentController.destroy);
 
 // Rotas para CRUD de Rating
 router.get('/rating',RatingController.index);

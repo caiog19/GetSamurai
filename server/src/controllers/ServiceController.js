@@ -14,7 +14,7 @@ const { Op } = require("sequelize");
 // Criação da Rota que retorna todos os serviços do banco de dados
 const index = async(req,res) => {
     try {
-        const services = await Service.findAll();
+        const services = await Service.findAll({include: [{model: User}] });
         return res.status(200).json({services});
     }catch(err){
         return res.status(500).json({err});
@@ -146,6 +146,16 @@ const search = async(req, res) => {
 	}
 };
 
+const list = async(req, res) => {
+    try {
+        const services = await Service.findAll({where: {UserId: req.params.user_id}});
+        return res.status(200).send(services);
+    } catch (err) {
+        return res.status(500).json(err + "!");
+    }
+    
+};
+
 
 
 
@@ -158,5 +168,6 @@ module.exports = {
     destroy,
     addPhotos,
     removePhoto,
-    search
+    search,
+    list
 };
