@@ -30,7 +30,7 @@ export default function Home(this: any) {
 
             <ScrollView>
                 {array.map((profissional, index) => (
-                    <ProfesionalCards key={index} title={profissional.title} name={profissional.name} > </ProfesionalCards>
+                    <ProfesionalCards key={index} title={profissional.title} name={profissional.name}></ProfesionalCards>
                 ))}
 
             </ScrollView>

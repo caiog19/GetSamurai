@@ -58,7 +58,7 @@ export default function Service() {
 
             <AlignTitle>
                 {array.map((profissional, index) => (
-                    <Title key={index} title={profissional.title}> </Title>
+                    <Title key={index} title={profissional.title}></Title>
                 ))}
 
                     <AntDesign name="hearto" size={24} color="black" />

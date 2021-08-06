@@ -17,7 +17,7 @@ export default function Register() {
     const onSubmit = (data: FormData) => {
         
         console.log(data);
-        navigation.navigate('Home')
+        navigation.navigate('Login')
     }
 
     const route = useRoute();

@@ -14,7 +14,9 @@ export default function Profile(props: string) {
   const navigation = useNavigation();
 
   const [Edit, SetEdit] = useState(false)
-  
+
+  const [EditImage, SetEditImage] = useState(false)
+
   useEffect(() => {
     (async () => {
       if (Platform.OS !== 'web') {
@@ -48,17 +50,24 @@ export default function Profile(props: string) {
       <View>
         <Title>Seu Perfil</Title>
       </View>
-      
+
       <AlignIcon>
         <EvilIcons name="gear" size={24} color="black" onPress={() => navigation.navigate("ProfileConfig")} />
       </AlignIcon>
 
-      <AlignCamera>
-        <EvilIcons name="camera" size={24} color="black" onPress={pickImage} />
+      <View>
 
-        {image && <Circle source={{ uri: image }} style={{ width: 80, height: 80 }} />}
 
-      </AlignCamera>
+        <AlignCamera>
+
+          <EvilIcons name="camera" size={24} color="black" onPress={pickImage} />
+
+          {image && <Circle source={{ uri: image }} style={{ width: 80, height: 80 }} />}
+          
+        </AlignCamera>
+
+
+      </View>
 
       <DescriptionBackGround> {Edit ? (
         <DescriptionContainer>
@@ -68,23 +77,18 @@ export default function Profile(props: string) {
           </DescriptionInput>
 
           <View>
-            <AntDesign name="check" size={24} color="black" onPress={handleSubmit(onSubmit)}/>
+            <AntDesign name="check" size={24} color="black" />
             <FontAwesome name="pencil-square-o" size={24} color="black" onPress={() => { SetEdit(!Edit); console.log(Edit) }} />
           </View>
 
         </DescriptionContainer>
       ) : (
         <>
-
-          <FontAwesome name="pencil-square-o" size={24} color="black" onPress={() => { SetEdit(!Edit); console.log(Edit) }}/> 
-          
+          <FontAwesome name="pencil-square-o" size={24} color="black" onPress={() => { SetEdit(!Edit); console.log(Edit) }} />
 
         </>
 
       )}
-
-
-
 
       </DescriptionBackGround>
 

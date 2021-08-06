@@ -22,7 +22,6 @@ export default function AccountType() {
         await AsyncStorage.setItem('role', role)
         navigation.navigate('Register', {role} )
 
-    
     }
     
     return (
