@@ -2,6 +2,7 @@
 require("../config/dotenv")();
 const { response } = require('express');
 const User = require('../models/User');
+const Cart = require('../models/Cart');
 const mailer = require('../../../../getsamurais/server/src/config/mail').mailer;
 const readHtml = require("../../../../getsamurais/server/src/config/mail").readHTMLFile;
 const path = require('path');
@@ -45,8 +46,6 @@ const show = async(req,res) => {
 const create = async(req,res) => {
 	try {
         validationResult(req).throw(); //validação
-        const pathTemplate = path.resolve(__dirname, '..', '..', 'templates');
-		console.log(pathTemplate);
 		const { password } = req.body;
 		const hashAndSalt = Auth.generatePassword(password);
 		const salt = hashAndSalt.salt;
@@ -58,7 +57,7 @@ const create = async(req,res) => {
             address: req.body.address,
             phoneNumber: req.body.phoneNumber,
             isAdmin: req.body.isAdmin,
-            isCliente: req.body.isCliente,
+            isClient: req.body.isClient,
             photo: req.body.photo,
             score: req.body.score,
 			hash: hash,
@@ -66,6 +65,12 @@ const create = async(req,res) => {
 		}
 		const user = await User.create(newUserData);
 
+        if(user.isAdmin == 0){
+            const cart = await Cart.create();
+            await cart.setUser(user);
+        }
+    
+        const pathTemplate = path.resolve(__dirname, '..', '..', 'templates');
         readHtml(path.join(pathTemplate, "confirma_cadastro.html"), (err,html)=>{
 			const template = hbs.compile(html);
 			const replacements = {
@@ -115,6 +120,8 @@ const update = async(req,res) => {
 const destroy = async(req,res) => {
     const {id} = req.params;
     try {
+        const user = await User.findByPk(id);
+        await Cart.destroy({where: {id: user.CartId}});
         const deleted = await User.destroy({where: {id: id}});
         if(deleted) {
             return res.status(200).json("Usuário deletado com sucesso.");
@@ -131,7 +138,7 @@ const like = async(req,res) => {
     try {
         const user_liking = await User.findByPk(liking_id);
         const user_liked  = await User.findByPk(req.body.liked_id);
-        if (user_liked.isCliente == 0){
+        if (user_liked.isClient == 0){
             await user_liking.addLiking(user_liked);
             return res.status(200).json("Usuário " + user_liked.id + " foi favoritado."); 
         }

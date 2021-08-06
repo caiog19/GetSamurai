@@ -3,10 +3,13 @@ const { Router } = require('express');
 const UserController = require('../controllers/UserController');
 const ServiceController = require('../controllers/ServiceController');
 const CommentController = require('../controllers/CommentController');
+const RatingController = require('../controllers/RatingController');
+const CartController = require('../controllers/CartController');
 const validator = require('../config/validator');
 const AuthController = require("../controllers/AuthController");
 const passport = require("passport");
 const serviceMiddleware = require('../middlewares/serviceMiddleware');
+const commentMiddleware = require('../middlewares/commentMiddleware');
 const path = require('path');
 const multer = require('multer');
 const storage = require("../config/files");
@@ -55,21 +58,40 @@ router.get('/listLike/:id',UserController.listLikes);
 // Rotas para CRUD de Service
 router.get('/service',ServiceController.index);
 router.get('/service/:id',ServiceController.show);
-router.post('/service/:user_id', validator.validationService('create'), ServiceController.create);
-router.put('/service/:id', serviceMiddleware.editDeleteService, ServiceController.update); //passa o Bearer token
-router.delete('/service/:id', serviceMiddleware.editDeleteService, ServiceController.destroy); //passa o Bearer token
+router.get('/service/user/:user_id',ServiceController.list); //lista os serviços criados pelo usuario
+router.get('/search',ServiceController.search); //procura os servicos pelo body key "term"
+router.post('/service/user/:user_id', validator.validationService('create'), ServiceController.create);
+router.put('/service/:id', validator.validationService('update'), serviceMiddleware.editService, ServiceController.update); //passa o Bearer token
+router.delete('/service/:id', serviceMiddleware.deleteService, ServiceController.destroy); //passa o Bearer token
 
 //Rotas para relacionamento entre Serviço e Fotos
 router.post('/service/:id/file', allUploads, ServiceController.addPhotos);
 router.delete('/service/photo/:id', ServiceController.removePhoto);
 
 
+
 // Rotas para CRUD de Comment
 router.get('/comment',CommentController.index);
 router.get('/comment/:id',CommentController.show);
-router.post('/comment/:user_id/service/:service_id',validator.validationComment('create'), CommentController.create);
+router.post('/comment/service/:service_id/user/:user_id',validator.validationComment('create'), CommentController.create);
 router.put('/comment/:id',validator.validationComment('update'), CommentController.update);
-router.delete('/comment/:id', CommentController.destroy);
+router.delete('/comment/:id',commentMiddleware.deleteComment, CommentController.destroy);
+
+// Rotas para CRUD de Rating
+router.get('/rating',RatingController.index);
+router.get('/rating/:id',RatingController.show);
+router.get('/rating/user/:user_id', RatingController.listPerUser); //lista de avaliações do profissional
+router.post('/rating/service/:service_id/user/:user_id', validator.validationRating('create'), RatingController.create);
+router.put('/rating/:id', validator.validationRating('update'), RatingController.update);
+router.delete('/rating/:id/service/:service_id', RatingController.destroy);
+
+// Rotas para CRUD de Cart
+router.get('/cart/user/:user_id',CartController.index);
+router.post('/cart/user/:user_id',CartController.sendEmail);
+router.put('/cart/service/:service_id/user/:user_id',CartController.addServices);
+router.delete('/cart/service/:service_id/user/:user_id',CartController.removeServices);
+
+
 
 
 // Exportação das rotas criadas

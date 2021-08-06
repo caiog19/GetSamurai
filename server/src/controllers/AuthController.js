@@ -10,7 +10,7 @@ const login = async(req, res)=>{
 		const {password} = req.body;
 		if(Auth.checkPassword(password, user.hash, user.salt)){
 			const token = Auth.generateJWT(user);
-			return res.status(200).json({token: token});
+			return res.status(200).json({user, token: token});
 		} else{
 			return res.status(401).json({message: "Senha invalida"});
 		}

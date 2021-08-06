@@ -4,14 +4,17 @@ const { response } = require('express');
 const Service = require('../models/Service');
 const User = require('../models/User');
 const Photo = require('../models/Photo');
+const Cart = require('../models/Cart');
 const fsPromise = require('fs').promises;
 const path = require('path');
 const {validationResult} = require('express-validator');
+const { Op } = require("sequelize");
+
 
 // Criação da Rota que retorna todos os serviços do banco de dados
 const index = async(req,res) => {
     try {
-        const services = await Service.findAll();
+        const services = await Service.findAll({include: [{model: User}] });
         return res.status(200).json({services});
     }catch(err){
         return res.status(500).json({err});
@@ -36,9 +39,10 @@ const create = async(req,res) => {
 	try {
         validationResult(req).throw(); //validação
         const user = await User.findByPk(user_id);
-        if (user.isCliente == 0) {
+        if (user.isClient == 0) {
             const service = await Service.create(req.body);
             await service.setUser(user);
+            //await Service.update({authorName: user.name}, {where: {id: service.id}})
 		    return res.status(201).json({service: service});
         }
 		throw new Error();
@@ -50,15 +54,17 @@ const create = async(req,res) => {
 // Criação da Rota que atualiza atributos de um serviço do banco de dados
 const update = async(req,res) => {
     const {id} = req.params;
+    
     try {
+        validationResult(req).throw(); //validação
         const [updated] = await Service.update(req.body, {where: {id: id}});
         if(updated) {
             const service = await Service.findByPk(id);
             return res.status(200).send(service);
         } 
-        throw new Error();
+        throw new Error("Serviço não encontrado.");
     }catch(err){
-        return res.status(500).json("Serviço não encontrado");
+        return res.status(500).json({err: err});
     }
 };
 
@@ -114,6 +120,43 @@ const removePhoto = async(req, res) => {
 	}
 };
 
+const search = async(req, res) => {
+    const { term } = req.body;
+    try {
+        const results = await Service.findAll ({
+            where: {
+                [Op.or]: {
+                    title: {
+                        [Op.like]: '%' + term + '%'
+                    },
+                    description: {
+                        [Op.like]: '%' + term + '%'
+                    },
+                    address: {
+                        [Op.like]: '%' + term + '%'
+                    }
+                }
+            }, include: [{
+                model: User
+            }]
+        });
+        return res.status(200).json(results);
+    } catch (e) {
+		return res.status(500).json(e + "!");
+	}
+};
+
+const list = async(req, res) => {
+    try {
+        const services = await Service.findAll({where: {UserId: req.params.user_id}});
+        return res.status(200).send(services);
+    } catch (err) {
+        return res.status(500).json(err + "!");
+    }
+    
+};
+
+
 
 
 // Exportação da CRUD criada acima para routes
@@ -124,5 +167,7 @@ module.exports = {
     update,
     destroy,
     addPhotos,
-    removePhoto
+    removePhoto,
+    search,
+    list
 };

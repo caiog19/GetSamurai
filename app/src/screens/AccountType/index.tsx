@@ -17,9 +17,9 @@ export default function AccountType() {
     const navigation = useNavigation();
     
 
-    async function UseRole(role:string){
+    async function UseRole(role:number){
         
-        await AsyncStorage.setItem('role', role)
+     
         navigation.navigate('Register', {role} )
 
     }
@@ -39,7 +39,7 @@ export default function AccountType() {
                 
             </AlignItems>
 
-            <BlueButton title='Cliente' handleOnPress={() => UseRole('isClient')}/>
+            <BlueButton title='Cliente' handleOnPress={() => UseRole(1)}/>
                 
            
             <ExplainText>
@@ -49,7 +49,7 @@ export default function AccountType() {
             </ExplainText>
 
             
-            <BlueButton title='Profissional' handleOnPress={() => UseRole('isProfesional')}/>
+            <BlueButton title='Profissional' handleOnPress={() => UseRole(0)}/>
 
             <View>
                 <ExplainText>

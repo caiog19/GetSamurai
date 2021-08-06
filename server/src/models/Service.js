@@ -18,8 +18,13 @@ const Service = sequelize.define('Service', {
     address:{
         type: DataTypes.STRING,
         allowNull:false
-    }
+    },
 
+    /*
+    authorName: {
+        type: DataTypes.STRING
+    }
+    */
 
 }
 
@@ -37,6 +42,8 @@ Service.associate = function(models) {
     Service.belongsTo(models.User);
     Service.hasMany(models.Comment);
     Service.hasMany(models.Photo);
+    Service.hasMany(models.Rating);
+    Service.belongsToMany(models.Cart, {through: 'List', as: 'listed', foreignKey: 'listedId'});
 }
 
 //Exportação de user para os controllers

@@ -25,6 +25,8 @@ require('../models/User');
 require('../models/Service');
 require('../models/Comment');
 require('../models/Photo');
+require('../models/Rating');
+require('../models/Cart');
 
 
 

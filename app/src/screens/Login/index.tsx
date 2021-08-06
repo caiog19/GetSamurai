@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ViewBase,Text, TouchableOpacity, BackHandler, Button } from 'react-native';
+import { View, ViewBase,Text, TouchableOpacity, BackHandler, Button, Alert } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { EnsoLogo, LoginForm, AlignItems, InputForm, RegisterText, RegisterButton, ForgotPasswordText } from './style';
 import { NavigationContext, useNavigation } from '@react-navigation/native';
@@ -9,19 +9,46 @@ import BlueButton from '../../components/BlueButton';
 import  BackButton  from '../../components/BackButton/index'
 import Title from '../../components/Title';
 
+import UserService, {FormLogin} from '../../services/UserService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
+
+
+
 export default function Login() {
     const navigation = useNavigation();
     const { control, handleSubmit, formState:{errors}, getValues } = useForm({mode: 'onTouched'});
-
-    const onSubmit = (data: FormData) => {
+    /*
+    const showAlert = () => {
+        console.log("oieee")
+        Alert.alert(
+            "Ocorreu um erro.",
+            "Email ou senha erradas.",
+            [{text: "OK", onPress: () => console.log("oi")}] 
+        );
+    }
+    */
+    
+    const onSubmit = (data: FormLogin) => {
         console.log(data);
-        navigation.navigate("NavBar")
+        UserService.loginUser(data).then(response => {
+            if(response?.data.token) {
+                setToken('token', response.data.token)
+                navigation.navigate("NavBar")
+            }
+            else {
+                alert("Email ou senha inválidos.")
+                //noAccountAlert();
+            }
+        })
+        
     }
-
-    interface FormData {
-        email: string;
-        password: string;
+    
+    async function setToken(name:string, value:string) {
+        await AsyncStorage.setItem(name, value)
     }
+    
     return (
         <View>
         <BackButton/>

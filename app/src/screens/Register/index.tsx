@@ -9,30 +9,32 @@ import { AntDesign } from '@expo/vector-icons';
 import  BackButton  from '../../components/BackButton/index'
 import BlueButton from '../../components/BlueButton';
 import Title from '../../components/Title';
+import UserService, {FormRegister} from '../../services/UserService';
 
 
 export default function Register() {
     const { control, handleSubmit, formState: { errors }, getValues } = useForm({ mode: 'onTouched' });
     const navigation = useNavigation();
-    const onSubmit = (data: FormData) => {
-        
-        console.log(data);
-        navigation.navigate('Login')
-    }
+    
 
     const route = useRoute();
     
-    const role = route.params?.role;
+    const role:number = route.params?.role;
     console.log(role)
 
-    interface FormData {
+    const onSubmit = (data: FormRegister) => {
+        data.isClient = role;
+        data.isAdmin = 0;
 
-        fullName: string;
-        email: string;
-        password: string;
-        confirmPassword: string;
-        phoneNumber: number;
-    }
+        UserService.createUser(data).then(response => {
+            alert('Cadastro feito com sucesso!')
+            navigation.navigate('Login')
+            console.log(response)
+        },
+        (error => ('Cadastro não pode ser concluído.')))
+        console.log(data);
+    };
+
 
     return (
         <View>
@@ -66,10 +68,10 @@ export default function Register() {
                         
                     }}
 
-                    name='fullName'
+                    name='name'
                     defaultValue=''
                 />
-                {errors.fullName && <Text style={{ color: 'red' }}>{errors.fullName.message}</Text>}  
+                {errors.name && <Text style={{ color: 'red' }}>{errors.name.message}</Text>}  
             </View>
 
             <View>    
@@ -88,7 +90,7 @@ export default function Register() {
                             onBlur={onBlur}
 
                             onChangeText={
-                                (value: any) => onChange(value)
+                                (value: string) => onChange(value)
                             }
                         />
                     )}

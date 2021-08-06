@@ -33,9 +33,9 @@ export default function App() {
           headerShown: false
          }}>
            
-        
+      <Stack.Screen name="NavBar" component={NavBar}/>
 
-        <Stack.Screen name ="Presentation" component={Presentation}/>
+      <Stack.Screen name ="Presentation" component={Presentation}/>
 
        <Stack.Screen name="Login" component={Login}/>
 
@@ -50,7 +50,7 @@ export default function App() {
        <Stack.Screen name="Cart" component={Cart}/>
 
        <Stack.Screen name="ProfileConfig" component={ProfileConfig}/>
-       <Stack.Screen name="NavBar" component={NavBar}/>
+       
      </Stack.Navigator>
 
    </NavigationContainer>

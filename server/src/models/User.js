@@ -12,7 +12,8 @@ const User = sequelize.define('User', {
 
     email:{
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
 
     hash: {
@@ -25,7 +26,6 @@ const User = sequelize.define('User', {
    
     birthDate:{
         type: DataTypes.DATEONLY,
-        allowNull: false
     },
     phoneNumber:{
         type: DataTypes.STRING,
@@ -37,7 +37,7 @@ const User = sequelize.define('User', {
         allowNull: false
     },
 
-    isCliente:{
+    isClient:{
         type: DataTypes.BOOLEAN,
         allowNull: false
     },
@@ -69,8 +69,11 @@ const User = sequelize.define('User', {
 User.associate = function(models) {
     User.hasMany(models.Service);
     User.hasMany(models.Comment);
+    User.hasMany(models.Rating);
+    User.belongsTo(models.Cart);
     User.belongsToMany(models.User, {through: 'Favorite', as: 'liking', foreignKey: 'likingId'});
     User.belongsToMany(models.User, {through: 'Favorite', as: 'liked_by', foreignKey: 'likedId'});
+    
 }
 
 //Exportação de user para os controllers

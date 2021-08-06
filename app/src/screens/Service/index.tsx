@@ -12,9 +12,24 @@ import WhiteButton from '../../components/WhiteButton';
 import { block } from 'react-native-reanimated';
 import NavBar from '../../components/NavBar';
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useRoute} from '@react-navigation/native';
+import ServiceService from '../../services/ServiceService';
 
 export default function Service() {
+    const route = useRoute();
+    
+    const serviceId:number = route.params?.id;
+
+    const [service, setService] = useState();
+    useEffect(() => {
+        ServiceService.getService(serviceId).then(response => {
+            if(response) {
+                setService(response.data.service);
+            }
+        })
+    }, [])
+
+
 
     const Stack = createStackNavigator();
     const array = [{
@@ -57,9 +72,12 @@ export default function Service() {
             <BackButton />
 
             <AlignTitle>
-                {array.map((profissional, index) => (
-                    <Title key={index} title={profissional.title}></Title>
-                ))}
+
+                    {
+                        service?(<Title title={service.title}></Title>):(<Title title={'carregando...'}></Title>)
+                    }
+                    
+                
 
                     <AntDesign name="hearto" size={24} color="black" />
                 
@@ -88,8 +106,11 @@ export default function Service() {
             {image && <Image source={{ uri: image }} style={{ width: 375, height: 125 }} />}
 
 
-            <Description> Descrição
-            </Description>
+ 
+            {
+                service?(<Description>{service.description}</Description>):(<Description>carregando...</Description>)
+            }
+            
 
             <BlueButton title={"Adicionar ao carrinho"} handleOnPress={() => navigation.navigate("null")}></BlueButton>
 
